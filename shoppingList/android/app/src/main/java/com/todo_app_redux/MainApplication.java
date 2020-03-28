@@ -1,4 +1,4 @@
-package com.shoppinglist;
+package com.todo_app_redux;
 
 import android.app.Application;
 import android.content.Context;
