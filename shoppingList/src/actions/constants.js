@@ -5,7 +5,9 @@ export default class Constants {
 
   get(constant) {
     if (!this.constants[constant]) {
-      throw new Error("You didn't specify a valid constant dummy! " + constant);
+      console.log('constant', constant);
+      console.log('sonstantS', this.constants);
+      throw new Error("You didn't specify a valid constant. " + constant + '\n' + Object.keys(this.constants));
     }
     return constant;
   }

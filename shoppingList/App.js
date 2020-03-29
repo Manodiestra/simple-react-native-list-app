@@ -7,6 +7,8 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import ShoppingListScreen from './src/components/screens/shopping_list_screen';
 import CreateListScreen from './src/components/screens/create_list_screen';
 import store from './src/store/store';
+import {StyleSheet} from 'react-native';
+import AsyncStorage from '@react-native-community/async-storage';
 
 const Stack = createStackNavigator();
 
@@ -21,7 +23,7 @@ export default class App extends React.Component {
               component={ShoppingListScreen}
               options={({navigation}) => ({
                 headerRight: () => (
-                  <Container>
+                  <Container style={this.styles.addListButton}>
                     <Button
                       transparent
                       onPress={() =>
@@ -42,4 +44,9 @@ export default class App extends React.Component {
       </Provider>
     );
   }
+  styles = StyleSheet.create({
+    addListButton: {
+      margin: 8,
+    },
+  });
 }

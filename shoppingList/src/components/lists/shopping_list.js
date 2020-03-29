@@ -1,8 +1,10 @@
 import React from 'react';
+import {connect} from 'react-redux';
 import {Text, View, StyleSheet, TouchableOpacity} from 'react-native';
 import {SwipeRow} from 'react-native-swipe-list-view';
+import {getLists, deleteList} from '../../actions/listActions';
 
-export default class TodoListItem extends React.Component {
+export class ShoppingListItem extends React.Component {
   styles = StyleSheet.create({
     base: {
       backgroundColor: 'white',
@@ -39,7 +41,7 @@ export default class TodoListItem extends React.Component {
     },
   });
   render() {
-    const {todo} = this.props;
+    const {list} = this.props;
     return (
       <SwipeRow
         rightOpenValue={-125}
@@ -50,7 +52,10 @@ export default class TodoListItem extends React.Component {
         <View style={[this.styles.base, this.styles.hidden]}>
           {/* HIDDEN: need to swipe to see this content */}
           <TouchableOpacity
-            onPress={console.log}
+            onPress={() => {
+              console.log('delete button');
+              this.props.deleteList(this.props.list.id);
+            }}
             style={this.styles.deleteButton}>
             <Text style={this.styles.whiteText}>DELETE</Text>
           </TouchableOpacity>
@@ -62,9 +67,25 @@ export default class TodoListItem extends React.Component {
         </View>
         <View style={[this.styles.base, this.styles.visible]}>
           {/* VISIBLE: visible by default */}
-          <Text>{todo.title}</Text>
+          <Text>{list.title}</Text>
         </View>
       </SwipeRow>
     );
   }
 }
+
+const mapStateToProps = storeState => {
+  return {
+    lists: storeState.lists,
+  };
+};
+
+const mapPropsToDispatch = {
+  deleteList,
+  getLists,
+};
+
+export default connect(
+  mapStateToProps,
+  mapPropsToDispatch,
+)(ShoppingListItem);

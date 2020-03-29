@@ -3,8 +3,8 @@ import {connect} from 'react-redux';
 import AsyncStorage from '@react-native-community/async-storage';
 import {Container, Text, H1} from 'native-base';
 import {FlatList, StyleSheet} from 'react-native';
-import ShoppingListItem from '../todos/shopping_list';
-import {getTodos} from '../../actions/todos';
+import ShoppingListItem from '../lists/shopping_list';
+import {getLists} from '../../actions/listActions';
 
 export class ShoppingListScreen extends React.Component {
   styles = StyleSheet.create({
@@ -14,34 +14,19 @@ export class ShoppingListScreen extends React.Component {
     },
   });
 
-  state = {
-    loadedName: 'Elijah',
-  };
-  // PRIMITIVE EXAMPLE OF STORAGE
-  // async componentDidMount() {
-  //   const info = {
-  //     name: 'Joseph',
-  //     birthday: '01/01/2001',
-  //   };
-  //   await AsyncStorage.setItem("@todo_app_user_name", JSON.stringify(info));
-  //   const loadedInfoJsonString = await AsyncStorage.getItem("@todo_app_user_name");
-  //   const parsedInfo = JSON.parse(loadedInfoJsonString);
-  //   this.setState({ loadedName: parsedInfo.name });
-  //   console.log(parsedInfo);
-  // }
-
   componentDidMount() {
-    this.props.getTodos();
+    this.props.getLists();
   }
 
   render() {
-    if (this.props.todos.length === 0) {
+    console.log(Object.keys(this.props));
+    if (this.props.lists.length === 0) {
       return (
         <Container style={this.styles.message}>
-          <H1>Welcome {this.state.loadedName}!</H1>
+          <H1>Shopping Lists</H1>
           <Text>
-            You do not have any todos yet, click the "New" button at the top to
-            add a new todo.
+            You do not have any shopping lists yet, click the "New" button at 
+            the top to make a new list.
           </Text>
         </Container>
       );
@@ -50,24 +35,22 @@ export class ShoppingListScreen extends React.Component {
     return (
       <Container>
         <FlatList
-          data={this.props.todos}
-          renderItem={({item}) => <ShoppingListItem todo={item} />}
-          keyExtractor={item => `todo_${item.id}`}
+          data={this.props.lists}
+          renderItem={({item}) => <ShoppingListItem list={item} />}
+          keyExtractor={item => `list_${item.id}`}
         />
       </Container>
     );
   }
 }
 
-select = storeState => {
+const mapStateToProps = storeState => {
   return {
-    todos: storeState.todos,
+    lists: storeState.lists,
   };
 };
 
-// select = ({ todos }) => ({ todos });
-
 export default connect(
-  select,
-  {getTodos},
+  mapStateToProps,
+  {getLists},
 )(ShoppingListScreen);

@@ -1,6 +1,6 @@
 import React from 'react';
 import {connect} from 'react-redux';
-import {createTodo} from '../../actions/todos';
+import {createList} from '../../actions/listActions';
 import {Container, Input, Form, Item, Label, Button, Text} from 'native-base';
 import {StyleSheet, Alert} from 'react-native';
 import {TouchableOpacity} from 'react-native-gesture-handler';
@@ -51,19 +51,19 @@ export class CreateListScreen extends React.Component {
 
   save = () => {
     if (this.state.title === '') {
-      Alert.alert('Missing Info', 'You have to provide a title!!');
+      Alert.alert('Missing Info', 'You have to provide a title');
 
       this.setState({titleMissing: true});
 
       return;
-    } else if (this.state.selectedIcon == originalIconState) {
-      Alert.alert('Missing Info', 'You have to provide a title!!');
+    } else if (this.state.selectedIcon === originalIconState) {
+      Alert.alert('Missing Info', 'You have to select an icon');
 
       this.setState({iconMissing: true});
 
       return;
     }
-    this.props.createTodo(this.state.title, this.state.selectedIcon);
+    this.props.createList(this.state.title, this.state.selectedIcon);
     this.props.navigation.goBack();
   };
 
@@ -122,7 +122,7 @@ export class CreateListScreen extends React.Component {
 }
 
 const mapPropsToDispatch = {
-  createTodo,
+  createList,
 };
 
 export default connect(

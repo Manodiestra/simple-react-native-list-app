@@ -5,13 +5,4 @@ export default (store) => (next) => (action) => {
   }
   const result = next(action);
   return result;
-}
-
-// MIDDLEWARE IS A FUNCTION THAT RETURNS A FUNCTION THAT RETURNS A FUNCTION
-// function() {
-//   returns function() {
-//     returns function() {
-//
-//     }
-//   }
-// }
+};
