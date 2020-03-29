@@ -5,6 +5,7 @@ export const constants = new Constants({
   GET_LISTS: 'GET_LISTS',
   GET_LISTS_DONE: 'GET_LISTS_DONE',
   DELETE_LIST: 'DELETE_LIST',
+  UPDATE_LIST: 'UPDATE_LIST',
 });
 
 export const createList = (title, selectedIcon) => ({
@@ -13,6 +14,11 @@ export const createList = (title, selectedIcon) => ({
     title,
     selectedIcon,
   },
+});
+
+export const updateList = payload => ({
+  type: constants.get('UPDATE_LIST'),
+  payload: payload,
 });
 
 export const getLists = () => ({

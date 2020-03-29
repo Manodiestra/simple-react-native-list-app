@@ -2,7 +2,7 @@ import React from 'react';
 import {connect} from 'react-redux';
 import {Text, View, StyleSheet, TouchableOpacity} from 'react-native';
 import {SwipeRow} from 'react-native-swipe-list-view';
-import {getLists, deleteList} from '../../actions/listActions';
+import {getLists, deleteList, updateList} from '../../actions/listActions';
 
 export class ShoppingListItem extends React.Component {
   styles = StyleSheet.create({
@@ -53,14 +53,16 @@ export class ShoppingListItem extends React.Component {
           {/* HIDDEN: need to swipe to see this content */}
           <TouchableOpacity
             onPress={() => {
-              console.log('delete button');
-              this.props.deleteList(this.props.list.id);
+              this.props.deleteList(list.id);
             }}
             style={this.styles.deleteButton}>
             <Text style={this.styles.whiteText}>DELETE</Text>
           </TouchableOpacity>
           <TouchableOpacity
-            onPress={console.log}
+            onPress={() => {
+              this.props.navigation.navigate('Create Shopping List', {id: list.id});
+              //this.props.updateList(this.props.list);
+            }}
             style={this.styles.editButton}>
             <Text style={this.styles.whiteText}>MODIFY</Text>
           </TouchableOpacity>
@@ -83,6 +85,7 @@ const mapStateToProps = storeState => {
 const mapPropsToDispatch = {
   deleteList,
   getLists,
+  updateList,
 };
 
 export default connect(

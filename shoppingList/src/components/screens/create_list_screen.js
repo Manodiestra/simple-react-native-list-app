@@ -67,6 +67,27 @@ export class CreateListScreen extends React.Component {
     this.props.navigation.goBack();
   };
 
+  checkIfInModifyMode() {
+    console.log(Object.keys(this.props.route));
+    if (this.props.route.params) {
+      let id = this.props.route.params.id;
+      for (let list in this.props.lists) {
+        if (this.props.lists[list].id == id) {
+          let data = this.props.lists[list];
+          this.setState({
+            title: data.title,
+            selectedIcon: data.selectedIcon,
+            id: data.id,
+          });
+        }
+      }
+    }
+  }
+
+  componentDidMount() {
+    this.checkIfInModifyMode();
+  }
+
   render() {
     return (
       <Container>
@@ -121,11 +142,17 @@ export class CreateListScreen extends React.Component {
   }
 }
 
+const mapStateToProps = storeState => {
+  return {
+    lists: storeState.lists,
+  };
+};
+
 const mapPropsToDispatch = {
   createList,
 };
 
 export default connect(
-  null,
+  mapStateToProps,
   mapPropsToDispatch,
 )(CreateListScreen);

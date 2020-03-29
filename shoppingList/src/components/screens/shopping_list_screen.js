@@ -19,7 +19,6 @@ export class ShoppingListScreen extends React.Component {
   }
 
   render() {
-    console.log(Object.keys(this.props));
     if (this.props.lists.length === 0) {
       return (
         <Container style={this.styles.message}>
@@ -36,7 +35,9 @@ export class ShoppingListScreen extends React.Component {
       <Container>
         <FlatList
           data={this.props.lists}
-          renderItem={({item}) => <ShoppingListItem list={item} />}
+          renderItem={({item}) => (
+            <ShoppingListItem list={item} navigation={this.props.navigation} />
+          )}
           keyExtractor={item => `list_${item.id}`}
         />
       </Container>
