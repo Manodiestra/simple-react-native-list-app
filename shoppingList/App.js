@@ -6,6 +6,8 @@ import {Button, Container} from 'native-base';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import ShoppingListScreen from './src/components/screens/shopping_list_screen';
 import CreateListScreen from './src/components/screens/create_list_screen';
+import ShoppingListContents from './src/components/screens/list_contents';
+import AddListItem from './src/components/screens/add_list_item';
 import store from './src/store/store';
 import {StyleSheet} from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage';
@@ -40,6 +42,11 @@ export default class App extends React.Component {
               name="Create Shopping List"
               component={CreateListScreen}
             />
+            <Stack.Screen
+              name="List Contents"
+              component={ShoppingListContents}
+            />
+            <Stack.Screen name="Add Contents" component={AddListItem} />
           </Stack.Navigator>
         </NavigationContainer>
       </Provider>

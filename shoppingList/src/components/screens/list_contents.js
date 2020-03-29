@@ -1,10 +1,11 @@
 import React from 'react';
 import {connect} from 'react-redux';
-import {Text, View, StyleSheet, TouchableOpacity} from 'react-native';
+import {Text, View, StyleSheet, TouchableOpacity, FlatList} from 'react-native';
+import {Container, Button} from 'native-base';
 import {SwipeRow} from 'react-native-swipe-list-view';
-import {getLists, deleteList} from '../../actions/listActions';
+import {getLists} from '../../actions/listActions';
 
-export class ShoppingListItem extends React.Component {
+export class ShoppingListContents extends React.Component {
   styles = StyleSheet.create({
     base: {
       backgroundColor: 'white',
@@ -19,13 +20,12 @@ export class ShoppingListItem extends React.Component {
       justifyContent: 'center',
       paddingLeft: 16,
     },
-    editButton: {
-      flex: 1,
-      backgroundColor: 'green',
+    addButton: {
+      backgroundColor: 'blue',
       height: 64,
-      alignItems: 'flex-end',
+      alignItems: 'center',
       justifyContent: 'center',
-      paddingRight: 16,
+      paddingLeft: 16,
     },
     whiteText: {
       color: 'white',
@@ -39,40 +39,56 @@ export class ShoppingListItem extends React.Component {
       justifyContent: 'center',
       paddingLeft: 16,
     },
+    defaultFont: {
+      fontSize: 24,
+      fontWeight: 'bold',
+    },
   });
-  render() {
-    const {list} = this.props;
+  getListItem(item) {
     return (
       <SwipeRow
         rightOpenValue={-125}
         leftOpenValue={125}
         stopRightSwipe={-145}
-        stopLeftSwipe={145}
-        onRowPress={() =>
-          this.props.navigation.navigate('List Contents', list)
-        }>
+        stopLeftSwipe={145}>
         <View style={[this.styles.base, this.styles.hidden]}>
           {/* HIDDEN: need to swipe to see this content */}
           <TouchableOpacity
             onPress={() => {
-              this.props.deleteList(list.id);
+              this.props.deleteList(item.id);
             }}
             style={this.styles.deleteButton}>
             <Text style={this.styles.whiteText}>DELETE</Text>
           </TouchableOpacity>
-          <TouchableOpacity
-            onPress={() => {
-              this.props.navigation.navigate('Create Shopping List', {list});
-            }}
-            style={this.styles.editButton}>
-            <Text style={this.styles.whiteText}>MODIFY</Text>
-          </TouchableOpacity>
         </View>
         <View style={[this.styles.base, this.styles.visible]}>
           {/* VISIBLE: visible by default */}
-          <Text>{list.title}</Text>
+          <Text>{item.title}</Text>
         </View>
       </SwipeRow>
+    );
+  }
+  render() {
+    console.log('in list contents', this.props)
+    const {items} = this.props.route.params.items;
+    console.log(this.props);
+    return (
+      <Container>
+        <FlatList
+          data={this.props.items}
+          renderItem={({item}) => (
+            <View>
+              <Text>{item}</Text>
+            </View>
+          )}
+          keyExtractor={item => `item_${item.id}`}
+        />
+        <Button
+          style={this.styles.addButton}
+          onPress={() => this.props.navigation.navigate('Add Contents')}>
+          <Text style={this.styles.defaultFont}>Add Item</Text>
+        </Button>
+      </Container>
     );
   }
 }
@@ -84,11 +100,10 @@ const mapStateToProps = storeState => {
 };
 
 const mapPropsToDispatch = {
-  deleteList,
   getLists,
 };
 
 export default connect(
   mapStateToProps,
   mapPropsToDispatch,
-)(ShoppingListItem);
+)(ShoppingListContents);
