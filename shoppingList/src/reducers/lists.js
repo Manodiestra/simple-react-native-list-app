@@ -6,16 +6,19 @@ export default function(state = initialState, action) {
   switch (action.type) {
     case constants.get('CREATE_LIST'):
       console.log('Action Payload', action.payload);
+      let updatedState = JSON.parse(JSON.stringify(state));
+      for (let list in updatedState) {
+        if (updatedState[list].id == action.payload.id) {
+          updatedState[list] = action.payload;
+          console.log("SUCCESS, UPDATED");
+          return updatedState;
+        }
+      }
       const newList = {
         ...action.payload,
         items: [],
       };
       return [...state, newList];
-      for (let list in updatedState) {
-        if (updatedState[list].id == action.payload.id) {
-          updatedState[list] = action.payload;
-        }
-      }
     case constants.get('GET_LISTS_DONE'):
       return action.payload;
     case constants.get('DELETE_LIST'):

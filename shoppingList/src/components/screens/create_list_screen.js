@@ -41,10 +41,9 @@ export class CreateListScreen extends React.Component {
   });
 
   setIcon(input) {
-    let newIcons = {...originalIconState};
-    newIcons[input] = true;
-    console.log('newIcons', newIcons);
-    this.setState({selectedIcon: newIcons});
+    let newIcon = {...originalIconState};
+    newIcon[input] = true;
+    this.setState({selectedIcon: newIcon});
   }
 
   update = (key, value) => this.setState({[key]: value});
@@ -63,12 +62,15 @@ export class CreateListScreen extends React.Component {
 
       return;
     }
-    this.props.createList(this.state.title, this.state.selectedIcon);
+    this.props.createList({
+      title: this.state.title,
+      selectedIcon: this.state.selectedIcon,
+      id: this.state.id,
+    });
     this.props.navigation.goBack();
   };
 
   checkIfInModifyMode() {
-    console.log(Object.keys(this.props.route));
     if (this.props.route.params) {
       let id = this.props.route.params.id;
       for (let list in this.props.lists) {
