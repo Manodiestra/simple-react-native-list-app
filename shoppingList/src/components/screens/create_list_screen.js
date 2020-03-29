@@ -26,8 +26,10 @@ export class CreateListScreen extends React.Component {
 
   styles = StyleSheet.create({
     iconWrapper: {
+      flex: 1,
       padding: 8,
       flexDirection: 'row',
+      height: 'auto',
     },
     iconObject: {
       margin: 16,
@@ -37,6 +39,13 @@ export class CreateListScreen extends React.Component {
       marginTop: 16,
     },
   });
+
+  setIcon(input) {
+    let newIcons = {...originalIconState};
+    newIcons[input] = true;
+    console.log('newIcons', newIcons);
+    this.setState({selectedIcon: newIcons});
+  }
 
   update = (key, value) => this.setState({[key]: value});
 
@@ -71,34 +80,34 @@ export class CreateListScreen extends React.Component {
           </Item>
         </Form>
         <Container style={[this.styles.iconWrapper]}>
-          <TouchableOpacity onPress={console.log}>
+          <TouchableOpacity onPress={() => this.setIcon('th-list')}>
             <CustomIcon
               name="th-list"
               selected={this.state.selectedIcon['th-list']}
             />
           </TouchableOpacity>
-          <TouchableOpacity onPress={console.log}>
+          <TouchableOpacity onPress={() => this.setIcon('envelope')}>
             <CustomIcon
               name="envelope"
               selected={this.state.selectedIcon.envelope}
             />
           </TouchableOpacity>
-          <TouchableOpacity onPress={console.log}>
+          <TouchableOpacity onPress={() => this.setIcon('shopping-cart')}>
             <CustomIcon
               name="shopping-cart"
               selected={this.state.selectedIcon['shopping-cart']}
             />
           </TouchableOpacity>
-          <TouchableOpacity onPress={console.log}>
+          <TouchableOpacity onPress={() => this.setIcon('cutlery')}>
             <CustomIcon
               name="cutlery"
               selected={this.state.selectedIcon.cutlery}
             />
           </TouchableOpacity>
-          <TouchableOpacity onPress={console.log}>
+          <TouchableOpacity onPress={() => this.setIcon('car')}>
             <CustomIcon name="car" selected={this.state.selectedIcon.car} />
           </TouchableOpacity>
-          <TouchableOpacity onPress={console.log}>
+          <TouchableOpacity onPress={() => this.setIcon('linux')}>
             <CustomIcon name="linux" selected={this.state.selectedIcon.linux} />
           </TouchableOpacity>
         </Container>
