@@ -1,6 +1,6 @@
 import React from 'react';
-import { Text, View, StyleSheet, TouchableOpacity } from 'react-native';
-import { SwipeRow } from 'react-native-swipe-list-view';
+import {Text, View, StyleSheet, TouchableOpacity} from 'react-native';
+import {SwipeRow} from 'react-native-swipe-list-view';
 
 export default class TodoListItem extends React.Component {
   styles = StyleSheet.create({
@@ -36,24 +36,27 @@ export default class TodoListItem extends React.Component {
     visible: {
       justifyContent: 'center',
       paddingLeft: 16,
-    }
+    },
   });
   render() {
-    const { todo } = this.props;
+    const {todo} = this.props;
     return (
       <SwipeRow
         rightOpenValue={-125}
         leftOpenValue={125}
         stopRightSwipe={-145}
         stopLeftSwipe={145}
-        onRowPress={console.log}
-      >
+        onRowPress={console.log}>
         <View style={[this.styles.base, this.styles.hidden]}>
           {/* HIDDEN: need to swipe to see this content */}
-          <TouchableOpacity onPress={console.log} style={this.styles.deleteButton}>
+          <TouchableOpacity
+            onPress={console.log}
+            style={this.styles.deleteButton}>
             <Text style={this.styles.whiteText}>DELETE</Text>
           </TouchableOpacity>
-          <TouchableOpacity onPress={console.log} style={this.styles.editButton}>
+          <TouchableOpacity
+            onPress={console.log}
+            style={this.styles.editButton}>
             <Text style={this.styles.whiteText}>MODIFY</Text>
           </TouchableOpacity>
         </View>

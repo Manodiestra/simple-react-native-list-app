@@ -1,22 +1,22 @@
 import React from 'react';
-import { connect } from 'react-redux';
+import {connect} from 'react-redux';
 import AsyncStorage from '@react-native-community/async-storage';
-import { Container, Text, H1 } from 'native-base';
-import { FlatList, StyleSheet } from 'react-native';
-import TodoListItem from '../todos/todo_list_item';
-import { getTodos } from '../../actions/todos';
+import {Container, Text, H1} from 'native-base';
+import {FlatList, StyleSheet} from 'react-native';
+import ShoppingListItem from '../todos/shopping_list';
+import {getTodos} from '../../actions/todos';
 
-export class TodoListScreen extends React.Component {
+export class ShoppingListScreen extends React.Component {
   styles = StyleSheet.create({
     message: {
       alignItems: 'center',
       padding: 16,
-    }
-  })
+    },
+  });
 
   state = {
-    loadedName: 'Joseph',
-  }
+    loadedName: 'Elijah',
+  };
   // PRIMITIVE EXAMPLE OF STORAGE
   // async componentDidMount() {
   //   const info = {
@@ -39,18 +39,19 @@ export class TodoListScreen extends React.Component {
       return (
         <Container style={this.styles.message}>
           <H1>Welcome {this.state.loadedName}!</H1>
-          <Text>You do not have any todos yet, click the "New" button at the top to add a new todo.</Text>
+          <Text>
+            You do not have any todos yet, click the "New" button at the top to
+            add a new todo.
+          </Text>
         </Container>
-      )
+      );
     }
 
     return (
       <Container>
         <FlatList
           data={this.props.todos}
-          renderItem={({item}) => (
-            <TodoListItem todo={item} />
-          )}
+          renderItem={({item}) => <ShoppingListItem todo={item} />}
           keyExtractor={item => `todo_${item.id}`}
         />
       </Container>
@@ -58,12 +59,15 @@ export class TodoListScreen extends React.Component {
   }
 }
 
-select = (storeState) => {
+select = storeState => {
   return {
     todos: storeState.todos,
-  }
+  };
 };
 
 // select = ({ todos }) => ({ todos });
 
-export default connect(select, { getTodos })(TodoListScreen);
+export default connect(
+  select,
+  {getTodos},
+)(ShoppingListScreen);

@@ -1,11 +1,11 @@
 import React from 'react';
-import { NavigationContainer } from '@react-navigation/native';
-import { createStackNavigator } from '@react-navigation/stack';
-import { Provider } from 'react-redux';
-import { Button, Text, Container } from 'native-base';
+import {NavigationContainer} from '@react-navigation/native';
+import {createStackNavigator} from '@react-navigation/stack';
+import {Provider} from 'react-redux';
+import {Button, Container} from 'native-base';
 import Icon from 'react-native-vector-icons/FontAwesome';
-import TodoListScreen from './src/components/screens/todo_list_screen';
-import CreateTodoScreen from './src/components/screens/create_todo_screen';
+import ShoppingListScreen from './src/components/screens/shopping_list_screen';
+import CreateListScreen from './src/components/screens/create_list_screen';
 import store from './src/store/store';
 
 const Stack = createStackNavigator();
@@ -17,19 +17,26 @@ export default class App extends React.Component {
         <NavigationContainer>
           <Stack.Navigator>
             <Stack.Screen
-              name="Todo List"
-              component={TodoListScreen}
-              options={({ navigation }) => ({
+              name="Shopping List"
+              component={ShoppingListScreen}
+              options={({navigation}) => ({
                 headerRight: () => (
                   <Container>
-                    <Button transparent onPress={() => navigation.navigate('Create Todo')}>
+                    <Button
+                      transparent
+                      onPress={() =>
+                        navigation.navigate('Create Shopping List')
+                      }>
                       <Icon name="plus" size={24} color="blue" />
                     </Button>
                   </Container>
-                )
+                ),
               })}
             />
-            <Stack.Screen name="Create Todo" component={CreateTodoScreen} />
+            <Stack.Screen
+              name="Create Shopping List"
+              component={CreateListScreen}
+            />
           </Stack.Navigator>
         </NavigationContainer>
       </Provider>
