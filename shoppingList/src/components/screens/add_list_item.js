@@ -1,6 +1,6 @@
 import React from 'react';
 import {connect} from 'react-redux';
-import {createList} from '../../actions/listActions';
+import {addToList, getLists} from '../../actions/listActions';
 import {Container, Input, Form, Item, Label, Button, Text} from 'native-base';
 import {StyleSheet, Alert} from 'react-native';
 import {TouchableOpacity} from 'react-native-gesture-handler';
@@ -11,15 +11,6 @@ export class AddListItem extends React.Component {
   };
 
   styles = StyleSheet.create({
-    iconWrapper: {
-      flex: 1,
-      padding: 8,
-      flexDirection: 'row',
-      height: 'auto',
-    },
-    iconObject: {
-      margin: 16,
-    },
     saveButtonContainer: {
       padding: 14,
       marginTop: 16,
@@ -36,33 +27,13 @@ export class AddListItem extends React.Component {
 
       return;
     }
-    this.props.createList({
+    this.props.addToList({
+      list_id: this.props.route.params.list_id,
       title: this.state.title,
-      selectedIcon: this.state.selectedIcon,
       id: this.state.id,
     });
     this.props.navigation.goBack();
   };
-
-  checkIfInModifyMode() {
-    if (this.props.route.params) {
-      let id = this.props.route.params.id;
-      for (let list in this.props.lists) {
-        if (this.props.lists[list].id == id) {
-          let data = this.props.lists[list];
-          this.setState({
-            title: data.title,
-            selectedIcon: data.selectedIcon,
-            id: data.id,
-          });
-        }
-      }
-    }
-  }
-
-  componentDidMount() {
-    this.checkIfInModifyMode();
-  }
 
   render() {
     return (
@@ -70,12 +41,14 @@ export class AddListItem extends React.Component {
         <Form>
           <Item floatingLabel>
             <Label>Title</Label>
-            <Input
-              value={this.state.title}
-              onChangeText={text => this.update('title', text)}
-            />
+            <Input onChangeText={text => this.update('title', text)} />
           </Item>
         </Form>
+        <Container style={this.styles.saveButtonContainer}>
+          <Button onPress={this.save}>
+            <Text>Save</Text>
+          </Button>
+        </Container>
       </Container>
     );
   }
@@ -88,7 +61,8 @@ const mapStateToProps = storeState => {
 };
 
 const mapPropsToDispatch = {
-  createList,
+  addToList,
+  getLists,
 };
 
 export default connect(

@@ -1,5 +1,6 @@
 import UUID from 'uuid-js';
 import {constants} from '../actions/listActions';
+import { act } from 'react-test-renderer';
 const initialState = [];
 
 export default function(state = initialState, action) {
@@ -10,7 +11,6 @@ export default function(state = initialState, action) {
       for (let list in updatedState) {
         if (updatedState[list].id == action.payload.id) {
           updatedState[list] = action.payload;
-          console.log("SUCCESS, UPDATED");
           return updatedState;
         }
       }
@@ -21,6 +21,24 @@ export default function(state = initialState, action) {
       return [...state, newList];
     case constants.get('GET_LISTS_DONE'):
       return action.payload;
+    case constants.get('ADD_TO_LIST'):
+      console.log('action.payload', action.payload);
+      let addState = JSON.parse(JSON.stringify(state));
+      let searchingID = null;
+      let searchingIndex = null;
+      for (let i in addState) {
+        if (addState[i].id == action.payload.list_id) {
+          searchingID = action.payload.list_id;
+          searchingIndex = i;
+          console.log('SUCCESS, FOUND');
+          break;
+        }
+      }
+      addState[searchingIndex].items = [
+        ...addState[searchingIndex].items,
+        {id: action.payload.id, title: action.payload.title},
+      ];
+      return addState;
     case constants.get('DELETE_LIST'):
       let newState = JSON.parse(JSON.stringify(state));
       for (let list in newState) {

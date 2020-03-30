@@ -47,9 +47,9 @@ export class ShoppingListContents extends React.Component {
   getListItem(item) {
     return (
       <SwipeRow
-        rightOpenValue={-125}
+        rightOpenValue={-0}
         leftOpenValue={125}
-        stopRightSwipe={-145}
+        stopRightSwipe={-0}
         stopLeftSwipe={145}>
         <View style={[this.styles.base, this.styles.hidden]}>
           {/* HIDDEN: need to swipe to see this content */}
@@ -68,24 +68,34 @@ export class ShoppingListContents extends React.Component {
       </SwipeRow>
     );
   }
+  loadItems(id) {
+    console.log(id);
+  }
+  componentDidMount() {
+    this.loadItems('id');
+  }
   render() {
-    console.log('in list contents', this.props)
-    const {items} = this.props.route.params.items;
-    console.log(this.props);
+    console.log('ITEMS in list contents', Object.keys(this.props));
+    const items = this.props.route.params.items;
     return (
       <Container>
         <FlatList
-          data={this.props.items}
+          data={this.props.route.params.items}
           renderItem={({item}) => (
             <View>
-              <Text>{item}</Text>
+              <Text>{item.title}</Text>
+              {this.getListItem(item)}
             </View>
           )}
           keyExtractor={item => `item_${item.id}`}
         />
         <Button
           style={this.styles.addButton}
-          onPress={() => this.props.navigation.navigate('Add Contents')}>
+          onPress={() =>
+            this.props.navigation.navigate('Add Contents', {
+              list_id: this.props.route.params.id,
+            })
+          }>
           <Text style={this.styles.defaultFont}>Add Item</Text>
         </Button>
       </Container>
