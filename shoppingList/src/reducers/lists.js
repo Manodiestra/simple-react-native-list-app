@@ -49,12 +49,14 @@ export default function(state = initialState, action) {
       }
       return newState;
     case constants.get('DELETE_ITEM'):
+      console.log('IN DELETE ITEM');
       newState = JSON.parse(JSON.stringify(state));
       for (let list in newState) {
         if (newState[list].id == action.payload.list_id) {
           for (let index in newState[list].items) {
-            if (newState[list].items.id == action.payload.item_id) {
-              
+            if (newState[list].items[index].id == action.payload.item_id) {
+              console.log('NICKED IT!');
+              newState[list].items.splice(index, 1);
               break;
             }
           }
