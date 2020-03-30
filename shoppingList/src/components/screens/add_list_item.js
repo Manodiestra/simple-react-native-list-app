@@ -1,9 +1,8 @@
 import React from 'react';
 import {connect} from 'react-redux';
-import {addToList, getLists} from '../../actions/listActions';
+import {addToList} from '../../actions/listActions';
 import {Container, Input, Form, Item, Label, Button, Text} from 'native-base';
 import {StyleSheet, Alert} from 'react-native';
-import {TouchableOpacity} from 'react-native-gesture-handler';
 
 export class AddListItem extends React.Component {
   state = {
@@ -62,7 +61,6 @@ const mapStateToProps = storeState => {
 
 const mapPropsToDispatch = {
   addToList,
-  getLists,
 };
 
 export default connect(

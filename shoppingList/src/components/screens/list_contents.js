@@ -3,9 +3,12 @@ import {connect} from 'react-redux';
 import {Text, View, StyleSheet, TouchableOpacity, FlatList} from 'react-native';
 import {Container, Button} from 'native-base';
 import {SwipeRow} from 'react-native-swipe-list-view';
-import {getLists} from '../../actions/listActions';
+import {getLists, deleteItem} from '../../actions/listActions';
 
 export class ShoppingListContents extends React.Component {
+  state = {
+    currentList: null,
+  };
   styles = StyleSheet.create({
     base: {
       backgroundColor: 'white',
@@ -44,62 +47,75 @@ export class ShoppingListContents extends React.Component {
       fontWeight: 'bold',
     },
   });
-  getListItem(item) {
-    return (
-      <SwipeRow
-        rightOpenValue={-0}
-        leftOpenValue={125}
-        stopRightSwipe={-0}
-        stopLeftSwipe={145}>
-        <View style={[this.styles.base, this.styles.hidden]}>
-          {/* HIDDEN: need to swipe to see this content */}
-          <TouchableOpacity
-            onPress={() => {
-              this.props.deleteList(item.id);
-            }}
-            style={this.styles.deleteButton}>
-            <Text style={this.styles.whiteText}>DELETE</Text>
-          </TouchableOpacity>
-        </View>
-        <View style={[this.styles.base, this.styles.visible]}>
-          {/* VISIBLE: visible by default */}
-          <Text>{item.title}</Text>
-        </View>
-      </SwipeRow>
-    );
-  }
   loadItems(id) {
-    console.log(id);
+    for (let list in this.props.lists) {
+      if (this.props.lists[list].id == id) {
+        this.setState({
+          currentList: this.props.lists[list],
+        });
+      }
+    }
   }
   componentDidMount() {
-    this.loadItems('id');
+    this.props.getLists();
+    this.loadItems(this.props.route.params.id);
   }
   render() {
-    console.log('ITEMS in list contents', Object.keys(this.props));
-    const items = this.props.route.params.items;
-    return (
-      <Container>
-        <FlatList
-          data={this.props.route.params.items}
-          renderItem={({item}) => (
-            <View>
-              <Text>{item.title}</Text>
-              {this.getListItem(item)}
-            </View>
-          )}
-          keyExtractor={item => `item_${item.id}`}
-        />
-        <Button
-          style={this.styles.addButton}
-          onPress={() =>
-            this.props.navigation.navigate('Add Contents', {
-              list_id: this.props.route.params.id,
-            })
-          }>
-          <Text style={this.styles.defaultFont}>Add Item</Text>
-        </Button>
-      </Container>
-    );
+    if (this.state.currentList === null) {
+      return (
+        <View>
+          <Text>LOADING</Text>
+        </View>
+      );
+    } else {
+      const items = this.state.currentList.items;
+      console.log('ITEMS FOR LIST', items);
+      return (
+        <Container>
+          <FlatList
+            data={items}
+            renderItem={({item}) => {
+              return (
+                <SwipeRow
+                  rightOpenValue={-0}
+                  leftOpenValue={125}
+                  stopRightSwipe={-1}
+                  stopLeftSwipe={145}>
+                  <View style={[this.styles.base, this.styles.hidden]}>
+                    {/* HIDDEN: need to swipe to see this content */}
+                    <TouchableOpacity
+                      onPress={() => {
+                        console.log('need to delete this item');
+                        this.props.deleteItem({
+                          item_id: item.id,
+                          list_id: this.props.route.params.id,
+                        });
+                      }}
+                      style={this.styles.deleteButton}>
+                      <Text style={this.styles.whiteText}>DELETE</Text>
+                    </TouchableOpacity>
+                  </View>
+                  <View style={[this.styles.base, this.styles.visible]}>
+                    {/* VISIBLE: visible by default */}
+                    <Text>{item.title}</Text>
+                  </View>
+                </SwipeRow>
+              );
+            }}
+            keyExtractor={item => `item_${item.id}`}
+          />
+          <Button
+            style={this.styles.addButton}
+            onPress={() =>
+              this.props.navigation.navigate('Add Contents', {
+                list_id: this.props.route.params.id,
+              })
+            }>
+            <Text style={this.styles.defaultFont}>Add Item</Text>
+          </Button>
+        </Container>
+      );
+    }
   }
 }
 
@@ -111,6 +127,7 @@ const mapStateToProps = storeState => {
 
 const mapPropsToDispatch = {
   getLists,
+  deleteItem,
 };
 
 export default connect(

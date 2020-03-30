@@ -6,6 +6,7 @@ export const constants = new Constants({
   GET_LISTS_DONE: 'GET_LISTS_DONE',
   DELETE_LIST: 'DELETE_LIST',
   ADD_TO_LIST: 'ADD_TO_LIST',
+  DELETE_ITEM: 'DELETE_ITEM',
 });
 
 export const createList = payload => ({
@@ -24,5 +25,10 @@ export const getLists = () => ({
 
 export const deleteList = payload => ({
   type: constants.get('DELETE_LIST'),
+  payload: payload,
+});
+
+export const deleteItem = payload => ({
+  type: constants.get('DELETE_ITEM'),
   payload: payload,
 });

@@ -1,6 +1,6 @@
 import UUID from 'uuid-js';
 import {constants} from '../actions/listActions';
-import { act } from 'react-test-renderer';
+import {act} from 'react-test-renderer';
 const initialState = [];
 
 export default function(state = initialState, action) {
@@ -45,6 +45,19 @@ export default function(state = initialState, action) {
         if (newState[list].id == action.payload) {
           newState.splice(list, 1);
           break;
+        }
+      }
+      return newState;
+    case constants.get('DELETE_ITEM'):
+      newState = JSON.parse(JSON.stringify(state));
+      for (let list in newState) {
+        if (newState[list].id == action.payload.list_id) {
+          for (let index in newState[list].items) {
+            if (newState[list].items.id == action.payload.item_id) {
+              
+              break;
+            }
+          }
         }
       }
       return newState;
