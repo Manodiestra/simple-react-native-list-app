@@ -6,7 +6,6 @@ const initialState = [];
 export default function(state = initialState, action) {
   switch (action.type) {
     case constants.get('CREATE_LIST'):
-      console.log('Action Payload', action.payload);
       let updatedState = JSON.parse(JSON.stringify(state));
       for (let list in updatedState) {
         if (updatedState[list].id == action.payload.id) {
@@ -22,7 +21,6 @@ export default function(state = initialState, action) {
     case constants.get('GET_LISTS_DONE'):
       return action.payload;
     case constants.get('ADD_TO_LIST'):
-      console.log('action.payload', action.payload);
       let addState = JSON.parse(JSON.stringify(state));
       let searchingID = null;
       let searchingIndex = null;
@@ -49,13 +47,11 @@ export default function(state = initialState, action) {
       }
       return newState;
     case constants.get('DELETE_ITEM'):
-      console.log('IN DELETE ITEM');
       newState = JSON.parse(JSON.stringify(state));
       for (let list in newState) {
         if (newState[list].id == action.payload.list_id) {
           for (let index in newState[list].items) {
             if (newState[list].items[index].id == action.payload.item_id) {
-              console.log('NICKED IT!');
               newState[list].items.splice(index, 1);
               break;
             }
